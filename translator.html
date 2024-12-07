@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French-Thai Translator</title>
+    <style>
+        /* Overall body style */
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-image: url('celine.jpg'); /* Path to your image */
+            background-size: cover;  /* Makes the image cover the entire background */
+            background-position: center center; /* Centers the image */
+            background-repeat: no-repeat; /* Ensures the image does not repeat */
+        }
+
+        /* Header styling */
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Textarea styling */
+        textarea {
+            width: 100%;
+            max-width: 600px;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            resize: vertical;
+            background-color: #fff;
+        }
+
+        /* Select dropdown styling */
+        select {
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #0055A4; /* French blue */
+            color: white;
+            padding: 14px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #003C73; /* Darker blue */
+        }
+
+        /* Output text styling */
+        h2 {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        #output-text {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            max-width: 600px;
+            font-size: 18px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            color: #0055A4; /* French blue */
+            word-wrap: break-word;
+        }
+
+        /* Adding a bit of spacing to the page */
+        .container {
+            text-align: center;
+            padding: 30px;
+            background-color: #ffffffa1; /* Slight transparent background */
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>French-Thai Translator</h1>
+        <textarea id="input-text" rows="2" cols="50" placeholder="Type text here..."></textarea><br>
+        <select id="direction">
+            <option value="fr|th">French to Thai</option>
+            <option value="th|fr">Thai to French</option>
+        </select><br>
+        <button id="translate-button">Translate</button>
+        <h2>Translation:</h2>
+        <p id="output-text"></p>
+    </div>
+
+    <script>
+        async function translate() {
+            const inputText = document.getElementById("input-text").value.trim();
+            const direction = document.getElementById("direction").value.split("|");
+            const [source, target] = direction;
+
+            if (!inputText) {
+                document.getElementById("output-text").textContent = "Please enter text to translate.";
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=${source}|${target}`);
+                const data = await response.json();
+
+                if (data.responseData.translatedText) {
+                    document.getElementById("output-text").textContent = data.responseData.translatedText;
+                } else {
+                    document.getElementById("output-text").textContent = "Translation not available.";
+                }
+            } catch (error) {
+                console.error("Translation Error:", error);
+                document.getElementById("output-text").textContent = "Translation failed. Please check your input or try later.";
+            }
+        }
+
+        window.onload = () => {
+            document.getElementById("translate-button").addEventListener("click", translate);
+        };
+    </script>
+</body>
+</html>
