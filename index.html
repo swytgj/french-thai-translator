@@ -14,13 +14,27 @@
             background-repeat: no-repeat;
             height: 100vh;
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
         }
         .card {
             background-color: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             margin-left: 10%;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .feedback {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 465px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-left: 10%;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -36,6 +50,16 @@
         <h2 class="text-2xl font-semibold text-gray-700 mt-6">Translation:</h2>
         <p id="output-text" class="bg-gray-100 p-4 rounded-lg border border-gray-300 mt-2 text-gray-800"></p>
     </div>
+    
+    <div class="feedback text-center">
+        <h2 class="text-xl font-semibold text-gray-700 mb-2">Feedback</h2>
+        <form action="https://formsubmit.co/thanawatked@gmail.com" method="POST">
+            <textarea name="feedback" class="w-full p-3 rounded-lg border border-gray-300 focus:ring focus:ring-blue-300 mb-2" rows="3" placeholder="Leave your feedback here..."></textarea>
+            <input type="hidden" name="_subject" value="New Feedback from Translator App">
+            <input type="hidden" name="_captcha" value="false">
+            <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">Submit Feedback</button>
+        </form>
+    </div>    
 
     <script>
         async function translate() {
@@ -65,6 +89,13 @@
 
         window.onload = () => {
             document.getElementById("translate-button").addEventListener("click", translate);
+            document.getElementById("submit-feedback").addEventListener("click", () => {
+                const feedback = document.getElementById("feedback-text").value.trim();
+                if (feedback) {
+                    alert("Thank you for your feedback!");
+                    document.getElementById("feedback-text").value = "";
+                }
+            });
         };
     </script>
 </body>
